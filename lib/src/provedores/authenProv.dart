@@ -8,8 +8,23 @@ class Authprovider {
 // declaramos constructor
   Authprovider() {
     // inciaimos la instacia la clase
+    //
     _firebaseAuth = FirebaseAuth.instance;
   }
+// vamos a traernos los datos actulaes  usuarios actual el sistemas paara capturarlo
+
+  User getUser() {
+    return _firebaseAuth.currentUser;
+  }
+
+  bool isSingIn() {
+    final currenUser = _firebaseAuth.currentUser;
+    if (currenUser == null) {
+      return false;
+    }
+    return true;
+  }
+
 // vamos a crear el metodo para hacer login  a firebase
 // al cual le pasamos dos parametros
 // el metodo future reeempplazs ma so menos por decirlo a la promesa de javascriopt
@@ -21,7 +36,8 @@ class Authprovider {
     try {
       // le -pasamos la varibale de clase y llamanos le metodo de autecnicacion de google  y le pasamos los parametros
       // await espera que el proceso o la peticion termine de ejecutarse
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
     } catch (error) {
       // esto regresa el codigo de erros si no fallo el en login
       // no hya conexion
@@ -35,5 +51,34 @@ class Authprovider {
       return Future.error(errorMsg);
     }
     return true;
+  }
+
+//  el el mismo codigo le pasamos los argumentos
+  Future<bool> registro(String email, String password) async {
+    String errorMsg;
+    try {
+      // le -pasamos la varibale de clase y llamanos le metodo de autecnicacion de google  y le pasamos los parametros
+      // await espera que el proceso o la peticion termine de ejecutarse
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+    } catch (error) {
+      // esto regresa el codigo de erros si no fallo el en login
+      // no hya conexion
+      // ex ddio tiempo de espera
+    //  print(error);
+
+      errorMsg = error.code;
+    }
+    if (errorMsg != null) {
+      //si hay error
+      return Future.error(errorMsg);
+    }
+    return true;
+  }
+
+  // metodo para cerra session
+  //
+  Future<void> singOut() async {
+    return Future.wait([_firebaseAuth.signOut()]);
   }
 }

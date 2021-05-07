@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:formulario/src/Inicio/inicioPagina.dart';
-
 import 'package:formulario/src/Logon/loginPage.dart';
-import 'package:formulario/src/Registro/registroPage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:formulario/src/perfiles/cliente/map/mapClientePage.dart';
+import 'package:formulario/src/perfiles/cliente/registro/clienteRegistroPage.dart';
+import 'package:formulario/src/perfiles/mensajero/map/mapMesajertoPage.dart';
+import 'package:formulario/src/perfiles/mensajero/registro/mensajeroRegistroPage.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,10 +29,13 @@ class MyApp extends StatelessWidget {
             elevation: 0,
           ),
           primaryColor: Colors.orange),
-      home: MiCasa(),
+      home: Micasa(),
       routes: {
         '/login': (BuildContext context) => MyLogin(),
-        '/registro': (BuildContext context) => MyRegistro(),
+        'cliente/registro': (BuildContext context) => ClienteMyRegistro(),
+        'mensajero/registro': (BuildContext context) => MesanjeroMyRegistro(),
+        'cliente/mapa': (BuildContext context) => MapCliente(),
+        'mensajero/mapa': (BuildContext context) => MapMessenger(),
       },
     );
   }

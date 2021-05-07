@@ -1,47 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:formulario/src/Logon/controlerLogon.dart';
+import 'clienteControlerRegistro.dart';
 
-class MyLogin extends StatefulWidget {
+
+class ClienteMyRegistro extends StatefulWidget {
   @override
   _State createState() => _State();
 }
- 
-class _State extends State<MyLogin> {
-  // controladotrs
- ControlLogin conn = new ControlLogin();
-// metodo para inciar el controlalor
-// 
-@override
-     void   initState() {
-    super.initState();
-    // llamamos el metodo schulde
-     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      //incializamos en controlador de login
-      // controler login
-      conn.init(context);
-    });
-  }
 
+ClienteControlRegistro conr = new ClienteControlRegistro();
+
+class _State extends State<ClienteMyRegistro> {
   @override
   Widget build(BuildContext context) {
- 
+    conr.init(context);
     return Scaffold(
-      key: conn.key,
+      // inmportamos la lleve global 
+      key: conr.key,
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(children: [
           // llamamos metodos
-          clipper(),
+          clipper(context),
           textoLogin(),
           textoLogindos(),
-          SizedBox(height: MediaQuery.of(context).size.width * 0.26),
+          // SizedBox(height: 40,),
+          inputName(),
+          inputmobil(),
           inputEmail(),
           inputpass(),
-          buttonEnvioLogin(),
-          sincuenta(),
+          inputRepeatPass(),
+          buttonEnvioRegistro(context),
+          //  sincuenta(),
         ]),
       ),
     );
@@ -49,30 +39,73 @@ class _State extends State<MyLogin> {
 
 // metodos o wdget
 
-  Widget buttonEnvioLogin() {
+  Widget buttonEnvioRegistro(conx) {
     return Container(
         width: double.maxFinite,
         margin: EdgeInsets.symmetric(horizontal: 30, vertical: 9),
         child: ElevatedButton(
-          onPressed: conn.logon,
-          child: Text('Iniciar Session'),
           style: ElevatedButton.styleFrom(
             primary: Colors.red, // background
             onPrimary: Colors.white, // foreground
           ),
+          child: Text('Guarde sus datos'),
+          onPressed: conr.registro,
         ));
   }
 
   // fin boton
+  //
+  //
+  //
+  //
+
+  Widget inputName() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 30),
+      child: TextField(
+        autofocus: true,
+        keyboardType: TextInputType.text,
+        controller: conr.namecontroler,
+        decoration: InputDecoration(
+            //  hintText: 'Tucorreo@otulook.com',
+            labelText: 'Digite su nombre por favor',
+
+            // prefixIcon a la izquierda
+            suffixIcon: Icon(
+              Icons.person,
+              color: Colors.amber,
+            )),
+      ),
+    );
+  }
+
+  Widget inputmobil() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 30),
+      child: TextField(
+        keyboardType: TextInputType.number,
+        controller: conr.mobilcontroler,
+        decoration: InputDecoration(
+            //  hintText: 'Tucorreo@otulook.com',
+            labelText: 'Digite su numero celular',
+
+            //   prefixIcon a la izquierda
+            suffixIcon: Icon(
+              Icons.person_add,
+              color: Colors.amber,
+            )),
+      ),
+    );
+  }
+  //texto
 
   Widget inputEmail() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 30),
       child: TextField(
-
         autofocus: true,
         keyboardType: TextInputType.emailAddress,
-        controller: conn.correocontroler,
+        controller: conr.correocontroler,
         decoration: InputDecoration(
             //  hintText: 'Tucorreo@otulook.com',
             labelText: 'ingrese su correo electronico',
@@ -87,29 +120,51 @@ class _State extends State<MyLogin> {
   }
   //texto
 
-  Widget sincuenta() {
-    return Container(
-        width: double.maxFinite,
-        margin: EdgeInsets.symmetric(horizontal: 30, vertical: 9),
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.red, // background
-              onPrimary: Colors.white, // foreground
-            ),
-            child: Text('Please Register'),
-            onPressed: conn.iraRegistro));
-  }
+  // Widget sincuenta() {
+  // return Container(
+  //   width: double.maxFinite,
+  //   margin: EdgeInsets.symmetric(horizontal: 30, vertical: 9),
+  //  child: ElevatedButton(
+  //    style: ElevatedButton.styleFrom(
+  //     primary: Colors.red, // background
+  //     onPrimary: Colors.white, // foreground
+  //  ),
+  //  child: Text('REGISTRASE'),
+  //  onPressed: () {
+  //  conx.iraRegistro();
+  //  },
+  // ));
+  // }
 
   Widget inputpass() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: TextField(
-        autofocus: true,
-        controller: conn.passdcontroler,
         obscureText: true,
+        controller: conr.passdcontroler,
         decoration: InputDecoration(
             //  hintText: 'Tucorreo@otulook.com',
             labelText: 'ingrese su contraseña',
+
+            // prefixIcon a la izquierda
+            // materual icons
+            suffixIcon: Icon(
+              Icons.lock_open_outlined,
+              color: Colors.amber,
+            )),
+      ),
+    );
+  }
+
+  Widget inputRepeatPass() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      child: TextField(
+        controller: conr.repeatpassdcontroler,
+        obscureText: true,
+        decoration: InputDecoration(
+            //  hintText: 'Tucorreo@otulook.com',
+            labelText: 'Confirme sus contraseña',
 
             // prefixIcon a la izquierda
             // materual icons
@@ -127,7 +182,7 @@ class _State extends State<MyLogin> {
       // hay otro metodos como simetryc, only // investigar
       margin: EdgeInsets.all(10),
       child: Text(
-        'hola estamOS en el logon ',
+        'Por favor registre sus datos ',
         style:
             TextStyle(color: Colors.black, fontSize: 18, fontFamily: 'Cornela'),
       ),
@@ -140,14 +195,14 @@ class _State extends State<MyLogin> {
       // hay otro metodos como simetryc, only // investigar
       margin: EdgeInsets.all(10),
       child: Text(
-        'yo soy el LOGON',
+        'yo soy el registro',
         style: TextStyle(
             color: Colors.black45, fontSize: 22, fontFamily: 'Cornela'),
       ),
     );
   }
 
-  Widget clipper() {
+  Widget clipper(context) {
     return ClipPath(
       clipper: WaveClipperTwo(),
       child: Container(
@@ -170,8 +225,7 @@ class _State extends State<MyLogin> {
         ),
       ),
     );
-
+  }
     // metodos user y password
   }
-  // metodos de validacion
-}
+

@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 // Define un widget de formulario personalizado
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:formulario/src/Inicio/controladorInicio.dart';
 
-class MiCasa extends StatelessWidget {
+class Micasa extends StatefulWidget {
 // llamanos al conytrolador
 // y lo instanciamos
 
+  @override
+  _MicasaState createState() => _MicasaState();
+}
+
+class _MicasaState extends State<Micasa> {
   MiController conx = new MiController();
 
-  // sobre cargar la clase o widget
+@override
+     void   initState() {
+    super.initState();
+    // llamamos el metodo schulde
+     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      //incializamos en controlador de login
+      // controler login
+        conx.init(context);
+    });
+  }
+
+
+
   @override
   Widget build(context) {
     // incializamos nuestro controlador
@@ -29,17 +47,17 @@ class MiCasa extends StatelessWidget {
           clipper(context),
           SizedBox(height: MediaQuery.of(context).size.width * 0.1),
           textoUsuario('SELECCIONE SU PERFIL'),
-          SizedBox(height: MediaQuery.of(context).size.width * 0.05),
-          imgUser(context, 'img/clientes.png'),
+          SizedBox(height: MediaQuery.of(context).size.width * 0.03),
+          imgUser(context, 'img/clientes.png', 'cliente'),
           SizedBox(height: MediaQuery.of(context).size.width * 0.05),
           // llaman el metodo creado
           textoUsuario('CLIENTES'),
           //// la otra imagen
-          SizedBox(height: 7),
-          imgUser(context, 'img/domici.png'),
-          SizedBox(height: MediaQuery.of(context).size.width * 0.05),
-          textoUsuario('hola'),
-          SizedBox(height: MediaQuery.of(context).size.width * 0.05),
+           SizedBox(height: MediaQuery.of(context).size.width * 0.05),
+          imgUser(context, 'img/domici.png',  'mensajero'),
+          SizedBox(height: MediaQuery.of(context).size.width * 0.03),
+          textoUsuario(''),
+          SizedBox(height: MediaQuery.of(context).size.width * 0.01),
         ]),
       ),
     );
@@ -61,11 +79,12 @@ class MiCasa extends StatelessWidget {
     );
   }
 
-// metoos para  imagnes con circulo y llamar metodo nevegacion
-  Widget imgUser(BuildContext context, String imagenUser) {
+  Widget imgUser(BuildContext context, String imagenUser, String typeUser) {
     return GestureDetector(
-      // llamamos el metodo desde nuestro controlador
-      onTap: conx.iraPagina,
+      // llamamos el metodo desde nuestro controlador y le pasamos
+      // el parametro del tipo de usuario
+      onTap: ()=>  conx.iraPagina(typeUser),
+      
       child: CircleAvatar(
         backgroundImage: AssetImage(imagenUser),
         radius: 50,
@@ -73,8 +92,6 @@ class MiCasa extends StatelessWidget {
       ),
     );
   }
-
-// metoo clipper o clippath
 
   Widget clipper(BuildContext context) {
     return ClipPath(
@@ -94,6 +111,7 @@ class MiCasa extends StatelessWidget {
                     fontWeight: FontWeight.w800)),
           ],
         ),
+        
       ),
     );
   }
