@@ -15,12 +15,19 @@ void main() async {
 }
 
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
 // buils retona un widget
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'MESAJERIA',
+      initialRoute: 'inicio',
       theme: ThemeData(
           fontFamily: 'Dolle',
           // tema de app para dehar la barra del misco color  de
@@ -29,9 +36,11 @@ class MyApp extends StatelessWidget {
             elevation: 0,
           ),
           primaryColor: Colors.orange),
-      home: Micasa(),
+ 
+   
       routes: {
-        '/login': (BuildContext context) => MyLogin(),
+        'inicio': (BuildContext context) => MiCasa(),
+        'login': (BuildContext context) => MyLogin(),
         'cliente/registro': (BuildContext context) => ClienteMyRegistro(),
         'mensajero/registro': (BuildContext context) => MesanjeroMyRegistro(),
         'cliente/mapa': (BuildContext context) => MapCliente(),

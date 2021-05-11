@@ -35,19 +35,29 @@ class CustomerProvider {
     }
   }
 
+// metodo para recuperar informacion en tiempo real con Strem
+
+  Stream<DocumentSnapshot> getByIdStream(String id) {
+    return _ref.doc(id).snapshots(includeMetadataChanges: true);
+  }
+
+ 
+
 // nos devere  returnar un objeto de tipo cliente
   Future<Customer> getById(String id) async {
     // consulta a la base de datos
     // con este tipo de varibale para recorra todoa la coleccion
     // en busca del id y si lo encuentra lo regrese a la variable de lo contratio diga que no existe
-    DocumentSnapshot documento = await _ref.doc(id).get();
-    if (documento.exists) {
+    DocumentSnapshot document = await _ref.doc(id).get();
+    if (document.exists) {
       // lo pasamos el documento al un objeto customer
-      Customer customer = Customer.fromJson(documento.data());
+      Customer customer = Customer.fromJson(document.data());
       //retornamos el objeto completo
       return customer;
     } 
       return null;
     }
+
+
   }
 

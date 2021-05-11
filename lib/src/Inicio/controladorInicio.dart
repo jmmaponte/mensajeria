@@ -39,7 +39,7 @@ class MiController {
   void iraPagina(String typeUser) {
     // llamammos el memtodo
     guardarTipoUsuario(typeUser);
-    Navigator.pushNamed(context, '/login');
+    Navigator.pushNamed(context, 'login');
   }
 
   //metodo  para guardar las preferencias del tipo de

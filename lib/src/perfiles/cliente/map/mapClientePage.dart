@@ -14,7 +14,7 @@ class _ClienteState extends State<MapCliente> {
 // importamos el controlador
   MapControlerCliente _cocoon = new MapControlerCliente();
 // inciqlizamos nuestro controlador
-//  @override
+ @override
   void initState() {
     super.initState();
 // hacemos el enlace para que nos regrese le valor entro del marco
@@ -58,8 +58,8 @@ class _ClienteState extends State<MapCliente> {
           // llamamno el metodo de controler para inciualizac la poscion
           initialCameraPosition: _cocoon.initialPosition,
           onMapCreated: _cocoon.mapCreate,
-          //myLocationEnabled: true,
-          //myLocationButtonEnabled: true,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: true,
           markers: Set<Marker>.of(_cocoon.markers.values),
         );
   
@@ -79,6 +79,7 @@ class _ClienteState extends State<MapCliente> {
   }
   Widget botonMenu() {
     return Container(
+       alignment: Alignment.centerLeft,
       child: IconButton(
         onPressed: _cocoon.openCajon,
         icon: Icon(
@@ -92,11 +93,11 @@ class _ClienteState extends State<MapCliente> {
     return  GestureDetector(
           onTap: _cocoon.centerPosition,
           child: Container(
-        alignment: Alignment.bottomLeft,
+        alignment: Alignment.centerRight,
         margin: EdgeInsets.symmetric(horizontal: 6),
           child: Card(
             color: Colors.black,
-            elevation: 4,
+            elevation: 4.0,
         shape: CircleBorder(),
         child: Container(
           padding: EdgeInsets.all(11),
@@ -121,7 +122,9 @@ class _ClienteState extends State<MapCliente> {
               children: [
                 Container(
                   child: Text(
-                    'Nombre de usuario',
+                    // validamos el campo por si es nulo o tarda mucho la base de datos en regersarlos
+                    _cocoon.customer?.name ?? 'Nombre del usuario ',
+                  
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
@@ -132,7 +135,8 @@ class _ClienteState extends State<MapCliente> {
                 ),
                 Container(
                   child: Text(
-                    'Email',
+                       // validamos el campo por si es nulo o tarda mucho la base de datos en regersarlos
+                     _cocoon.customer?.email ?? 'correo electronico',
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey[850],
@@ -163,7 +167,7 @@ class _ClienteState extends State<MapCliente> {
             title: Text('Cerrar sesion'),
             trailing: Icon(Icons.power_settings_new),
             // leading: Icon(Icons.cancel),
-            onTap: () {},
+            onTap: _cocoon.sigOffCustomer,
           ),
         ],
       ),

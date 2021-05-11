@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:formulario/src/Utilidades/progesoDialogo.dart';
-import 'package:formulario/src/modelos/Customer.dart';
-import 'package:formulario/src/provedores/CustomerProvider.dart';
+import 'package:formulario/src/modelos/Messenger.dart';
 import 'package:formulario/src/provedores/GeofireProvider.dart';
+import 'package:formulario/src/provedores/MenssengerProvider.dart';
 import 'package:formulario/src/provedores/authenProv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,7 +14,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 
 
-class MapControlerCliente {
+class MapControlerMessenger {
   BuildContext context;
   Function refresh;
   GlobalKey<ScaffoldState> key = new GlobalKey<ScaffoldState>();
@@ -28,12 +28,12 @@ class MapControlerCliente {
   Position _position;
   StreamSubscription<Position> _positionStream;
 
-  BitmapDescriptor markerCliente;
+  BitmapDescriptor markerMsg;
 
   GeofirebaseProvider _geofireProvider;
   Authprovider _authProvider;
-  Customer customer;
-  CustomerProvider _customerProvider;
+  Messenger messenger;
+  MessengerProvider _messengerProvider;
 
   bool isConnectado = false;
   ProgressDialog _progressDialog;
@@ -41,7 +41,7 @@ class MapControlerCliente {
 // creamos esta varible de estipo de coleccion, para ue stren solicte los datos
 // en tiempo real solo cual el usuario lo pide.
   StreamSubscription<DocumentSnapshot> _statusSuscription;
-  StreamSubscription<DocumentSnapshot> _customerInfoSuscription;
+  StreamSubscription<DocumentSnapshot> _messengerInfoSuscription;
   
 
   Future init(BuildContext context, Function refresh) async {
@@ -50,12 +50,12 @@ class MapControlerCliente {
     _geofireProvider = new GeofirebaseProvider();
     _authProvider = new Authprovider();
 
-    _customerProvider = new CustomerProvider();
+    _messengerProvider = new MessengerProvider();
 
     _progressDialog =
         MyDialogoProgreso.createProgressDailog(context, 'Conectandose...');
 
-    markerCliente = await imagenMapRuta('img/delivery/client.png');
+    markerMsg = await imagenMapRuta('img/delivery/client.png');
     checkGPS();
     getCustomerInf();
   }
@@ -66,9 +66,9 @@ class MapControlerCliente {
 
 
   void getCustomerInf() {
-    Stream<DocumentSnapshot> clienteStream =  _customerProvider.getByIdStream(_authProvider.getUser().uid);
-    _customerInfoSuscription =  clienteStream.listen((DocumentSnapshot document) {
-      customer = Customer.fromJson(document.data());
+    Stream<DocumentSnapshot> msgStream =  _messengerProvider.getByIdStream(_authProvider.getUser().uid);
+    _messengerInfoSuscription =  msgStream.listen((DocumentSnapshot document) {
+      messenger = Messenger.fromJson(document.data());
       refresh();
     });
   }
@@ -81,7 +81,7 @@ class MapControlerCliente {
    void dispobible() {
     _positionStream?.cancel();
     _statusSuscription?.cancel();
-    _customerInfoSuscription?.cancel();
+    _messengerInfoSuscription?.cancel();
   }
 
  
@@ -145,20 +145,20 @@ class MapControlerCliente {
       centerPosition();
       guardarUbicacion();
 
-      addMarker('cliente', 
+      addMarker('mensajero', 
       _position.latitude, 
       _position.longitude,
           'Mi posicion', 
           '', 
-          markerCliente);
+          markerMsg);
       refresh();
 
       _positionStream = Geolocator.getPositionStream(
               desiredAccuracy: LocationAccuracy.best, distanceFilter: 1)
           .listen((Position position) {
         _position = position;
-        addMarker('cliente', _position.latitude, _position.longitude,
-            'Tu posicion', '', markerCliente);
+        addMarker('mesanjero', _position.latitude, _position.longitude,
+            'Mu posicion', '', markerMsg);
         animateCameraToPosition(_position.latitude, _position.longitude);
         guardarUbicacion();
         refresh();

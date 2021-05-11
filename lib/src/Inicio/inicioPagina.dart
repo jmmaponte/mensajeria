@@ -4,7 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:formulario/src/Inicio/controladorInicio.dart';
 
-class Micasa extends StatefulWidget {
+class MiCasa extends StatefulWidget {
 // llamanos al conytrolador
 // y lo instanciamos
 
@@ -12,7 +12,7 @@ class Micasa extends StatefulWidget {
   _MicasaState createState() => _MicasaState();
 }
 
-class _MicasaState extends State<Micasa> {
+class _MicasaState extends State<MiCasa> {
   MiController conx = new MiController();
 
 @override

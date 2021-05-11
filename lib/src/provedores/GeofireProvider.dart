@@ -17,8 +17,8 @@ class GeofirebaseProvider {
   }
  // guarda la poscion en la coleccion 
   Future<void> create(String id, double lat, double lng) {
-    GeoFirePoint myLocation = _geo.point(latitude: lat, longitude: lng);
-    return _ref.doc(id).set({'position': myLocation.data});
+    GeoFirePoint myUbication = _geo.point(latitude: lat, longitude: lng);
+    return _ref.doc(id).set({'status': 'cliente', 'position': myUbication.data});
   }
 // borra la poscion inicial de fireabase
   Future<void> borrar(String id) {
